@@ -268,3 +268,32 @@ function updateCalendarDay(isGroomSide) {
     }
   });
 }
+
+const guestbookForm = document.getElementById("guestbook-form");
+
+if (guestbookForm) {
+  guestbookForm.addEventListener("submit", function (e) {
+    e.preventDefault(); // chặn submit mặc định
+
+    const formData = new FormData(guestbookForm);
+
+    fetch("/", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        debugger
+        // Nếu Netlify nhận form OK (status 200/204)
+        if (response.ok) {
+          window.location.href = "/thanks.html";
+        } else {
+          // Có lỗi nhưng vẫn cho về trang cảm ơn (tuỳ bạn)
+          window.location.href = "/thanks.html";
+        }
+      })
+      .catch(() => {
+        // Lỗi network vẫn cho về trang cảm ơn
+        window.location.href = "/thanks.html";
+      });
+  });
+}
