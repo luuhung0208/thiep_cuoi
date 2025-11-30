@@ -271,28 +271,38 @@ function updateCalendarDay(isGroomSide) {
 
 const guestbookForm = document.getElementById("guestbook-form");
 
+function encode(data) {
+  return Object.keys(data)
+    .map(
+      (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+    )
+    .join("&");
+}
+
 if (guestbookForm) {
   guestbookForm.addEventListener("submit", function (e) {
     e.preventDefault(); // chặn submit mặc định
 
     const formData = new FormData(guestbookForm);
+    const data = {};
+
+    // FormData -> object thuần, để encode thành x-www-form-urlencoded
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
 
     fetch("/", {
       method: "POST",
-      body: formData,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encode(data),
     })
-      .then((response) => {
-        debugger
-        // Nếu Netlify nhận form OK (status 200/204)
-        if (response.ok) {
-          window.location.href = "/thanks.html";
-        } else {
-          // Có lỗi nhưng vẫn cho về trang cảm ơn (tuỳ bạn)
-          window.location.href = "/thanks.html";
-        }
+      .then(() => {
+        // gửi xong thì luôn redirect sang trang cảm ơn
+        window.location.href = "/thanks.html";
       })
-      .catch(() => {
-        // Lỗi network vẫn cho về trang cảm ơn
+      .catch((error) => {
+        console.error("Netlify form submit error:", error);
+        // vẫn cho về trang cảm ơn, hoặc bạn có thể hiện alert
         window.location.href = "/thanks.html";
       });
   });
