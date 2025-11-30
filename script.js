@@ -132,20 +132,20 @@ function applyUrlParams() {
   //    - nhà gái: bride, nhagai, nha-gai, ng
   const sideParam = params.get("side");
   const sideLineEl = document.getElementById("sideLine");
-  const guestSideEl = document.getElementById("guestSide");
+  // const guestSideEl = document.getElementById("guestSide");
 
   if (sideParam) {
     const normalized = sideParam.toLowerCase();
     let familyLineText = "";
-    let sideLabel = "";
+    // let sideLabel = "";
     let isGroomSide = null;
     if (["groom", "nhatrai", "nha-trai", "nt"].includes(normalized)) {
-      familyLineText = "CỦA GIA ĐÌNH NHÀ TRAI";
-      sideLabel = "Thiệp nhà trai";
+      familyLineText = "CÙNG GIA ĐÌNH CHÚNG TÔI";
+      // sideLabel = "Thiệp nhà trai";
       isGroomSide = true;
     } else if (["bride", "nhagai", "nha-gai", "ng"].includes(normalized)) {
-      familyLineText = "CỦA GIA ĐÌNH NHÀ GÁI";
-      sideLabel = "Thiệp nhà gái";
+      familyLineText = "CÙNG GIA ĐÌNH CHÚNG TÔI";
+      // sideLabel = "Thiệp nhà gái";
       isGroomSide = false;
     }
 
@@ -155,10 +155,10 @@ function applyUrlParams() {
     }
 
     // Cập nhật label nhỏ dưới "TRÂN TRỌNG KÍNH MỜI"
-    if (sideLabel && guestSideEl) {
-      guestSideEl.textContent = sideLabel.toUpperCase();
+    // if (sideLabel && guestSideEl) {
+    //   guestSideEl.textContent = sideLabel.toUpperCase();
 
-    }
+    // }
     if (isGroomSide !== null) {
       updateCoupleOrder(isGroomSide);
       updateEventInfo(isGroomSide);   // đổi giờ + địa điểm
@@ -235,8 +235,8 @@ function updateEventInfo(isGroomSide) {
   if (!mainTimeEl || !mainLocationLabelEl || !mainLocationEl) return;
 
   const eventInfo = isGroomSide ? GROOM_EVENT : BRIDE_EVENT;
-
-  mainTimeEl.textContent = eventInfo.time;
+  const eventDate = isGroomSide ? GROOM_LETTER_DATE : BRIDE_LETTER_DATE;
+  mainTimeEl.textContent = `${eventDate} · ${eventInfo.time}`;
   mainLocationLabelEl.textContent = eventInfo.locationLabel;
   mainLocationEl.textContent = eventInfo.location;
 }
